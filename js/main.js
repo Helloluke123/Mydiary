@@ -9,7 +9,7 @@ const firebaseConfig = {
     projectId: "my-diary-app-7c624",
     storageBucket: "my-diary-app-7c624.firebasestorage.app",
     messagingSenderId: "105338607953",
-    appId: "1:105338607953:web:8b9cfbab951990195c5b70"
+    appId: "1:105338607953:web:8b9cfbab951990195c5b70",
     measurementId: "G-0WV7HVJZ9W"
 
 };
