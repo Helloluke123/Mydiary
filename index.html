@@ -5,133 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>我的動漫風日記</title>
     <link rel="stylesheet" href="css/style.css">
-    <!-- PWA 支援 -->
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <link rel="apple-touch-icon" href="icon.png">
 </head>
 <body>
-    <!-- 1. 登入區塊 (未登入時顯示) -->
+    <!-- 1. 登入區塊 -->
     <div id="auth-container" style="padding: 50px 20px; text-align: center;">
-        <div id="login-form" class="diary-card" style="display: inline-block; max-width: 400px; width: 100%; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+        <div class="diary-card" style="display: inline-block; max-width: 400px; width: 100%; background: white; padding: 30px; border-radius: 20px;">
             <h2 style="color: #FFB7C5; margin-bottom: 20px;">🌸 歡迎回來 🌸</h2>
-            <p style="color: #888;">請登入以開啟你的私密日記空間</p>
-            
-            <!-- Google 登入按鈕 -->
-            <button id="google-login-btn" style="background-color: white; color: #757575; border: 1px solid #ddd; padding: 12px 20px; cursor: pointer; border-radius: 25px; display: flex; align-items: center; justify-content: center; width: 100%; margin: 20px 0; font-size: 16px; transition: 0.3s;">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width: 20px; margin-right: 12px;">
-                使用 Google 帳號登入
+            <button id="google-login-btn" style="background-color: white; border: 1px solid #ddd; padding: 12px 20px; cursor: pointer; border-radius: 25px; width: 100%; display: flex; align-items: center; justify-content: center;">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width: 20px; margin-right: 12px;"> 使用 Google 登入
             </button>
-
-            <div style="margin: 20px 0; color: #ccc; display: flex; align-items: center;">
-                <hr style="flex: 1; border: 0.5px solid #eee;"> <span style="margin: 0 10px; font-size: 12px;">或使用信箱</span> <hr style="flex: 1; border: 0.5px solid #eee;">
-            </div>
-
-            <input type="email" id="email" placeholder="電子郵件" style="padding: 12px; margin: 10px 0; width: 90%; border-radius: 20px; border: 1px solid #FFB7C5; outline: none;">
-            <input type="password" id="password" placeholder="密碼" style="padding: 12px; margin: 10px 0; width: 90%; border-radius: 20px; border: 1px solid #FFB7C5; outline: none;">
+            <hr style="margin: 20px 0; border: 0.5px solid #eee;">
+            <input type="email" id="email" placeholder="電子郵件" style="width: 90%; padding: 10px; margin-bottom: 10px; border-radius: 20px; border: 1px solid #FFB7C5;">
+            <input type="password" id="password" placeholder="密碼" style="width: 90%; padding: 10px; margin-bottom: 10px; border-radius: 20px; border: 1px solid #FFB7C5;">
             <br>
-            <button id="login-btn" style="background-color: #FFB7C5; border: none; padding: 10px 30px; color: white; cursor: pointer; border-radius: 20px; margin: 10px; font-weight: bold;">登入</button>
-            <button id="signup-btn" style="background-color: #f9f9f9; border: 1px solid #eee; padding: 10px 30px; cursor: pointer; border-radius: 20px; margin: 10px; color: #777;">註冊</button>
+            <button id="login-btn" style="background: #FFB7C5; color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer;">登入</button>
+            <button id="signup-btn" style="background: #f9f9f9; border: 1px solid #eee; padding: 10px 20px; border-radius: 20px; cursor: pointer;">註冊</button>
         </div>
     </div>
 
-    <!-- 2. 日記主內容 (登入後顯示) -->
+    <!-- 2. 日記主內容 -->
     <div id="main-content" style="display: none;">
         <div class="container">
             <header style="display: flex; justify-content: space-between; align-items: center; padding: 20px;">
-                <div style="flex: 1;"></div>
-                <h1 style="flex: 2; text-align: center;">🌸 心情日誌 🌸</h1>
-                <div style="flex: 1; text-align: right;">
-                    <button id="logout-btn" style="background: white; border: 1px solid #FFB7C5; color: #FFB7C5; cursor: pointer; border-radius: 15px; padding: 5px 15px;">登出</button>
-                </div>
+                <h1>🌸 心情日誌 🌸</h1>
+                <button id="logout-btn" style="border: 1px solid #FFB7C5; color: #FFB7C5; background: white; padding: 5px 15px; border-radius: 15px; cursor: pointer;">登出</button>
             </header>
-
             <main>
                 <section class="input-section diary-card">
-                    <div class="date-tag" id="current-date"></div>
                     <textarea id="diary-input" placeholder="今天發生了什麼有趣的事呢..."></textarea>
                     <div class="controls">
                         <div class="mood-selector">
-                            <span class="mood-btn active" data-mood="😊">😊</span>
-                            <span class="mood-btn" data-mood="🌟">🌟</span>
-                            <span class="mood-btn" data-mood="☁️">☁️</span>
-                            <span class="mood-btn" data-mood="🌧️">🌧️</span>
+                            <span class="mood-btn active">😊</span>
+                            <span class="mood-btn">🌟</span>
+                            <span class="mood-btn">☁️</span>
+                            <span class="mood-btn">🌧️</span>
                         </div>
                         <button id="save-btn" class="save-btn">保存紀錄 ✨</button>
                     </div>
                 </section>
-
-                <section id="diary-list" class="diary-list">
-                    <!-- 這裡會由 js/main.js 動態生成內容 -->
-                </section>
+                <section id="diary-list" class="diary-list"></section>
             </main>
         </div>
     </div>
 
-    <!-- 3. Firebase 核心邏輯 -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
-
-        // Firebase 配置 (請保持你的專案資訊)
-        const firebaseConfig = {
-            apiKey: "AIzaSyBnIewx3yXluFsQaCXcFNryUA7h89h4jdU",
-            authDomain: "my-diary-app-7c624.firebaseapp.com",
-            projectId: "my-diary-app-7c624",
-            storageBucket: "my-diary-app-7c624.firebasestorage.app",
-            messagingSenderId: "105338607953",
-            appId: "1:105338607953:web:8b9cfbab951990195c5b70",
-            measurementId: "G-0WV7HVJZ9W"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const provider = new GoogleAuthProvider();
-
-        const authContainer = document.getElementById('auth-container');
-        const mainContent = document.getElementById('main-content');
-
-        // 監聽登入狀態切換畫面
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                authContainer.style.display = 'none';
-                mainContent.style.display = 'block';
-                console.log("當前使用者:", user.displayName || user.email);
-            } else {
-                authContainer.style.display = 'block';
-                mainContent.style.display = 'none';
-            }
-        });
-
-        // Google 登入功能
-        document.getElementById('google-login-btn').addEventListener('click', () => {
-            signInWithPopup(auth, provider).catch(err => alert("Google 登入失敗: " + err.message));
-        });
-
-        // 信箱登入功能
-        document.getElementById('login-btn').addEventListener('click', () => {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            signInWithEmailAndPassword(auth, email, password).catch(err => alert("登入失敗: " + err.message));
-        });
-
-        // 信箱註冊功能
-        document.getElementById('signup-btn').addEventListener('click', () => {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            createUserWithEmailAndPassword(auth, email, password).then(() => alert("註冊成功！")).catch(err => alert("註冊失敗: " + err.message));
-        });
-
-        // 登出功能
-        document.getElementById('logout-btn').addEventListener('click', () => {
-            signOut(auth).then(() => {
-                // 清除畫面上已載入的日記內容(防止登出後殘留畫面)
-                document.getElementById('diary-list').innerHTML = '';
-            });
-        });
-    </script>
-    
-    <!-- 原本的日記處理邏輯 -->
-    <script src="js/main.js"></script>
+    <!-- 唯一引用的 JS -->
+    <script type="module" src="js/main.js"></script>
 </body>
 </html>
