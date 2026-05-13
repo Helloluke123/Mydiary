@@ -2,7 +2,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebas
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, collection, query, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
 
-// Firebase 配置
 const firebaseConfig = {
     apiKey: "AIzaSyBnIewx3yXluFsQaCXcFNryUA7h89h4jdU",
     authDomain: "my-diary-app-7c624.firebaseapp.com",
@@ -22,24 +21,25 @@ let currentUser = null;
 
 const authContainer = document.getElementById('auth-container');
 const mainContent = document.getElementById('main-content');
+const diaryList = document.getElementById('diary-list');
 
-// --- 登入狀態監聽 ---
+// --- 介面切換與資料載入 ---
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         currentUser = user;
         authContainer.style.display = 'none';
         mainContent.style.display = 'block';
-        console.log("登入成功:", user.email);
+        console.log("登入成功，正在載入雲端日記...");
         await loadDiariesFromCloud();
     } else {
         currentUser = null;
         authContainer.style.display = 'block';
         mainContent.style.display = 'none';
-        document.getElementById('diary-list').innerHTML = '';
+        diaryList.innerHTML = '';
     }
 });
 
-// --- 功能按鈕：登入、註冊、登出 ---
+// --- 登入/註冊功能 ---
 document.getElementById('google-login-btn').addEventListener('click', () => {
     signInWithPopup(auth, provider).catch(err => alert("Google 登入失敗: " + err.message));
 });
@@ -60,7 +60,7 @@ document.getElementById('logout-btn').addEventListener('click', () => {
     signOut(auth);
 });
 
-// --- 心情按鈕切換 ---
+// --- 心情選擇邏輯 ---
 document.querySelectorAll('.mood-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
@@ -73,36 +73,37 @@ document.getElementById('save-btn').addEventListener('click', async () => {
     const inputField = document.getElementById('diary-input');
     const content = inputField.value.trim();
     const activeMoodBtn = document.querySelector('.mood-btn.active');
-    const mood = activeMoodBtn ? activeMoodBtn.innerText : '😊';
+    const mood = activeMoodBtn ? activeMoodBtn.dataset.mood : '😊';
     const date = new Date().toLocaleDateString();
 
-    if (!content) return alert("寫點什麼吧！");
-
-    if (!currentUser) return alert("尚未登入！");
+    if (!content) return alert("請寫入點內容吧！");
+    if (!currentUser) return alert("連線逾時，請重新登入");
 
     const diaryData = {
-        content,
-        mood,
-        date,
+        content: content,
+        mood: mood,
+        date: date,
         createdAt: new Date()
     };
 
     try {
         const diaryId = Date.now().toString();
+        // 儲存到雲端
         await setDoc(doc(db, "users", currentUser.uid, "diaries", diaryId), diaryData);
-        console.log("✅ 儲存成功");
+        console.log("✅ 成功同步至雲端");
+        
+        // 清空輸入並刷新
         inputField.value = '';
-        await loadDiariesFromCloud(); // 儲存完立即刷新列表
+        await loadDiariesFromCloud(); 
     } catch (e) {
-        console.error("❌ 儲存失敗:", e);
-        alert("儲存失敗，請檢查網路或權限。");
+        console.error("儲存失敗:", e);
+        alert("儲存失敗，請檢查網路連線");
     }
 });
 
-// --- 讀取日記 ---
+// --- 從雲端抓取並顯示卡片 ---
 async function loadDiariesFromCloud() {
-    const diaryList = document.getElementById('diary-list');
-    diaryList.innerHTML = '<p style="text-align:center;">載入中...</p>';
+    diaryList.innerHTML = '<p style="text-align:center; padding:20px;">載入中...</p>';
     
     try {
         const q = query(
@@ -112,19 +113,29 @@ async function loadDiariesFromCloud() {
         const querySnapshot = await getDocs(q);
         diaryList.innerHTML = '';
         
+        if (querySnapshot.empty) {
+            diaryList.innerHTML = '<p style="text-align:center; color:#888;">尚未有任何紀錄</p>';
+            return;
+        }
+
         querySnapshot.forEach((doc) => {
             const data = doc.data();
             const div = document.createElement('div');
-            div.className = 'diary-card item';
-            div.style.marginBottom = '15px'; // 稍微間隔
+            
+            // 每一篇日記都使用獨立的 .diary-card 類別
+            div.className = 'diary-card item'; 
+            div.style.marginBottom = '25px'; 
+            
             div.innerHTML = `
                 <div class="date-tag">${data.date} ${data.mood}</div>
-                <div class="content" style="margin-top:10px;">${data.content}</div>
+                <div class="content" style="margin-top:15px; white-space: pre-wrap; font-size:1.1rem; line-height:1.6;">
+                    ${data.content}
+                </div>
             `;
             diaryList.appendChild(div);
         });
     } catch (e) {
         console.error("讀取失敗:", e);
-        diaryList.innerHTML = '<p>暫無記錄或讀取失敗</p>';
+        diaryList.innerHTML = '<p style="text-align:center;">載入失敗，請確認 Firebase Rules 設定</p>';
     }
 }
