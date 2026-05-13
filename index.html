@@ -9,12 +9,14 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body>
+    <!-- 登入區塊 -->
     <div id="auth-container" style="padding: 50px 20px; text-align: center;">
         <div class="diary-card" style="display: inline-block; max-width: 400px; width: 100%; background: white; padding: 30px; border-radius: 20px;">
             <h2 style="color: #FFB7C5;">🌸 歡迎回來 🌸</h2>
             <button id="google-login-btn" style="background-color: white; border: 1px solid #ddd; padding: 12px 20px; cursor: pointer; border-radius: 25px; width: 100%; margin: 20px 0;">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width: 20px; margin-right: 12px;"> 使用 Google 登入
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width: 20px; margin-right: 12px;"> 使用 Google 帳號切換
             </button>
+            <div style="margin: 20px 0; color: #ccc;">或</div>
             <input type="email" id="email" placeholder="電子郵件" style="width: 90%; padding: 10px; margin-bottom: 10px; border-radius: 20px; border: 1px solid #FFB7C5;">
             <input type="password" id="password" placeholder="密碼" style="width: 90%; padding: 10px; margin-bottom: 10px; border-radius: 20px; border: 1px solid #FFB7C5;">
             <br>
@@ -23,6 +25,7 @@
         </div>
     </div>
 
+    <!-- 主內容區塊 -->
     <div id="main-content" style="display: none;">
         <div class="container">
             <header style="display: flex; justify-content: space-between; align-items: center; padding: 20px;">
@@ -46,6 +49,8 @@
             </main>
         </div>
     </div>
-    <script type="module" src="js/main.js"></script>
+
+    <!-- 關鍵修改：加上 v=1.1 版本號破解快取 -->
+    <script type="module" src="js/main.js?v=1.1"></script>
 </body>
 </html>
