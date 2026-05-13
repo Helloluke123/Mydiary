@@ -2,7 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebas
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, collection, query, getDocs, orderBy, deleteDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
 
-// --- Firebase 配置 (請確保與你的專案資訊一致) ---
+// --- Firebase 配置 ---
 const firebaseConfig = {
     apiKey: "AIzaSyBnIewx3yXluFsQaCXcFNryUA7h89h4jdU",
     authDomain: "my-diary-app-7c624.firebaseapp.com",
@@ -16,7 +16,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+// --- Google 登入配置 (解決無法切換帳號問題) ---
 const provider = new GoogleAuthProvider();
+provider.setCustomParameters({
+  prompt: 'select_account' // 每次登入都會強制彈出帳號選擇器
+});
 
 let currentUser = null;
 
@@ -24,7 +29,7 @@ const authContainer = document.getElementById('auth-container');
 const mainContent = document.getElementById('main-content');
 const diaryList = document.getElementById('diary-list');
 
-// --- 監聽登入狀態 ---
+// --- 登入狀態監聽 ---
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         currentUser = user;
@@ -38,12 +43,17 @@ onAuthStateChanged(auth, async (user) => {
     }
 });
 
-// --- 登入功能 ---
+// --- 帳號功能 ---
 document.getElementById('google-login-btn')?.addEventListener('click', () => {
-    signInWithPopup(auth, provider).catch(err => alert("登入失敗: " + err.message));
+    signInWithPopup(auth, provider).catch(err => console.error("Google 登入出錯:", err));
 });
 
-document.getElementById('logout-btn')?.addEventListener('click', () => signOut(auth));
+document.getElementById('logout-btn')?.addEventListener('click', () => {
+    signOut(auth).then(() => {
+        // 登出後清空介面
+        diaryList.innerHTML = '';
+    });
+});
 
 // --- 心情選擇 ---
 document.querySelectorAll('.mood-btn').forEach(btn => {
@@ -66,10 +76,7 @@ document.getElementById('save-btn')?.addEventListener('click', async () => {
     try {
         const diaryId = Date.now().toString();
         await setDoc(doc(db, "users", currentUser.uid, "diaries", diaryId), {
-            content: content,
-            mood: mood,
-            date: date,
-            createdAt: new Date()
+            content, mood, date, createdAt: new Date()
         });
         inputField.value = '';
         await loadDiariesFromCloud();
@@ -78,7 +85,7 @@ document.getElementById('save-btn')?.addEventListener('click', async () => {
     }
 });
 
-// --- 讀取並顯示日記 (含紅色刪除按鈕) ---
+// --- 讀取並顯示日記 ---
 async function loadDiariesFromCloud() {
     if (!currentUser) return;
     diaryList.innerHTML = '<p style="text-align:center;">載入中...</p>';
@@ -92,15 +99,12 @@ async function loadDiariesFromCloud() {
             const data = docSnap.data();
             const div = document.createElement('div');
             div.className = 'diary-card item';
-            
-            // 重要：確保卡片是相對定位，讓按鈕可以固定在右上角
             div.style.position = 'relative'; 
             div.style.marginBottom = '25px';
 
             div.innerHTML = `
                 <div class="date-tag">${data.date} ${data.mood}</div>
                 
-                <!-- 刪除按鈕：顯眼的紅色圓圈 -->
                 <button class="real-delete-btn" data-id="${docSnap.id}" 
                         style="position: absolute; top: 10px; right: 10px; 
                                background: #ff4d4f; color: white; border: none; 
@@ -118,20 +122,15 @@ async function loadDiariesFromCloud() {
             diaryList.appendChild(div);
         });
 
-        // 綁定刪除功能
+        // 綁定刪除按鈕
         document.querySelectorAll('.real-delete-btn').forEach(btn => {
-            btn.addEventListener('click', async (e) => {
-                const diaryId = e.currentTarget.dataset.id;
+            btn.onclick = async (e) => {
+                const id = e.currentTarget.dataset.id;
                 if (confirm("確定要刪除這篇日記嗎？")) {
-                    try {
-                        await deleteDoc(doc(db, "users", currentUser.uid, "diaries", diaryId));
-                        console.log("刪除成功");
-                        await loadDiariesFromCloud(); // 重新整理
-                    } catch (err) {
-                        console.error("刪除失敗:", err);
-                    }
+                    await deleteDoc(doc(db, "users", currentUser.uid, "diaries", id));
+                    await loadDiariesFromCloud();
                 }
-            });
+            };
         });
 
     } catch (e) {
