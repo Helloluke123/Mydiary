@@ -2,6 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebas
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, collection, query, getDocs, orderBy, deleteDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
 
+// --- Firebase 配置 ---
 const firebaseConfig = {
     apiKey: "AIzaSyBnIewx3yXluFsQaCXcFNryUA7h89h4jdU",
     authDomain: "my-diary-app-7c624.firebaseapp.com",
@@ -16,7 +17,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// --- Google 登入配置：強制彈出帳號選單 ---
+// --- Google 登入配置：解決切換帳號問題 ---
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({
   prompt: 'select_account' 
@@ -83,7 +84,7 @@ document.getElementById('save-btn')?.addEventListener('click', async () => {
     }
 });
 
-// 讀取與渲染 (紅色 ✕ 按鈕)
+// 讀取與渲染
 async function loadDiariesFromCloud() {
     if (!currentUser) return;
     diaryList.innerHTML = '<p style="text-align:center;">載入中...</p>';
@@ -118,7 +119,6 @@ async function loadDiariesFromCloud() {
             diaryList.appendChild(div);
         });
 
-        // 綁定刪除
         document.querySelectorAll('.real-delete-btn').forEach(btn => {
             btn.onclick = async (e) => {
                 const id = e.currentTarget.dataset.id;
@@ -131,4 +131,13 @@ async function loadDiariesFromCloud() {
     } catch (e) {
         console.error(e);
     }
+}
+
+// --- 註冊 Service Worker (PWA 關鍵) ---
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('Service Worker 註冊成功', reg))
+            .catch(err => console.log('Service Worker 註冊失敗', err));
+    });
 }
