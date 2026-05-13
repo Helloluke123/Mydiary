@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>我的動漫風日記</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="manifest" href="manifest.json">
+    <!-- 加入版本號強迫瀏覽器重新偵測 PWA 狀態 -->
+    <link rel="manifest" href="manifest.json?v=1.5">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#FFB7C5">
 </head>
 <body>
     <!-- 登入區塊 -->
@@ -50,7 +52,7 @@
         </div>
     </div>
 
-    <!-- 關鍵修改：加上 v=1.1 版本號破解快取 -->
-    <script type="module" src="js/main.js?v=1.1"></script>
+    <!-- JS 加上版本號避免舊版程式碼干擾 -->
+    <script type="module" src="js/main.js?v=1.5"></script>
 </body>
 </html>

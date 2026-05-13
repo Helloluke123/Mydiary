@@ -1,13 +1,12 @@
-const CACHE_NAME = 'diary-app-v1.4'; // 每次修改此處版本號，手機就會重新偵測更新
+const CACHE_NAME = 'diary-app-v1.5';
 const urlsToCache = [
   './',
   './index.html',
   './css/style.css',
-  './js/main.js?v=1.1',
-  './manifest.json'
+  './js/main.js?v=1.5',
+  './manifest.json?v=1.5'
 ];
 
-// 安裝 Service Worker 並快取檔案
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -15,7 +14,6 @@ self.addEventListener('install', event => {
   );
 });
 
-// 攔截網路請求，確保離線時也能從快取抓取內容
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
