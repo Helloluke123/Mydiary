@@ -1,0 +1,22 @@
+{
+  "name": "我的動漫風日記",
+  "short_name": "心情日記",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#FFB7C5",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/192/2926/2926331.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2926/2926331.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
