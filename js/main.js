@@ -27,6 +27,7 @@ const authContainer = document.getElementById('auth-container');
 const mainContent = document.getElementById('main-content');
 const diaryList = document.getElementById('diary-list');
 
+// 監聽登入狀態
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         currentUser = user;
@@ -42,12 +43,15 @@ onAuthStateChanged(auth, async (user) => {
     }
 });
 
+// Google 登入
 document.getElementById('google-login-btn')?.addEventListener('click', () => {
     signInWithPopup(auth, provider).catch(err => console.error(err));
 });
 
+// 登出
 document.getElementById('logout-btn')?.addEventListener('click', () => { signOut(auth); });
 
+// 寫日記時的心情選擇
 document.querySelectorAll('.mood-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
@@ -55,6 +59,7 @@ document.querySelectorAll('.mood-btn').forEach(btn => {
     });
 });
 
+// 保存紀錄 (含日記與禱告)
 document.getElementById('save-btn')?.addEventListener('click', async () => {
     const inputField = document.getElementById('diary-input');
     const prayerField = document.getElementById('prayer-input');
@@ -79,6 +84,7 @@ document.getElementById('save-btn')?.addEventListener('click', async () => {
     } catch (e) { console.error(e); }
 });
 
+// 從雲端抓取日記
 async function loadDiariesFromCloud() {
     if (!currentUser || !diaryList) return;
     diaryList.innerHTML = '<p style="text-align:center;">載入中...</p>';
@@ -97,10 +103,11 @@ async function loadDiariesFromCloud() {
         filterAndRenderDiaries();
     } catch (e) { 
         console.error(e); 
-        diaryList.innerHTML = '<p style="text-align:center; color:red;">連線資料庫失敗，請重新整理</p>';
+        diaryList.innerHTML = '<p style="text-align:center; color:red;">連線資料庫失敗</p>';
     }
 }
 
+// 渲染與篩選邏輯
 function filterAndRenderDiaries() {
     if (!diaryList) return;
     const keyword = document.getElementById('search-input')?.value.toLowerCase().trim() || "";
@@ -147,6 +154,7 @@ function filterAndRenderDiaries() {
         diaryList.appendChild(div);
     });
 
+    // 刪除按鈕事件綁定
     document.querySelectorAll('.real-delete-btn').forEach(btn => {
         btn.onclick = async (e) => {
             const id = e.currentTarget.dataset.id;
@@ -158,8 +166,10 @@ function filterAndRenderDiaries() {
     });
 }
 
+// 監聽關鍵字輸入
 document.getElementById('search-input')?.addEventListener('input', filterAndRenderDiaries);
 
+// 點擊心情篩選標籤
 document.querySelectorAll('.filter-mood-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
         document.querySelectorAll('.filter-mood-btn').forEach(b => {
@@ -176,3 +186,40 @@ document.querySelectorAll('.filter-mood-btn').forEach(btn => {
         filterAndRenderDiaries();
     });
 });
+
+// ==========================================
+/* 🌸 新增：控制搜尋面板的隱藏與顯示動畫邏輯 */
+// ==========================================
+document.getElementById('toggle-filter-btn')?.addEventListener('click', function() {
+    const panel = document.getElementById('filter-panel');
+    if (!panel) return;
+
+    const isHidden = panel.classList.contains('hide-panel');
+
+    if (isHidden) {
+        panel.classList.remove('hide-panel');
+        this.style.backgroundColor = '#FFB7C5';
+        this.style.color = 'white';
+        this.innerText = '❌ 關閉篩選工具';
+    } else {
+        panel.classList.add('hide-panel');
+        this.style.backgroundColor = 'white';
+        this.style.color = '#FFB7C5';
+        this.innerText = '🔍 展開歷史搜尋與心情篩選';
+        
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) {
+            searchInput.value = '';
+            searchInput.dispatchEvent(new Event('input')); 
+        }
+    }
+});
+
+// 註冊 Service Worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('PWA 註冊成功'))
+            .catch(err => console.log('PWA 註冊失敗', err));
+    });
+}

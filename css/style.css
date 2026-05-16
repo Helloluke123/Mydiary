@@ -1,72 +1,64 @@
-/* 配色定義 */
-:root {
-    --primary-pink: #FFB7C5;
-    --sky-blue: #A0D8EF;
-    --bg-color: #F8F4E6;
-    --border-color: #333;
-}
-
+/* ==========================================
+   🌸 1. 基礎全域樣式與點點背景
+   ========================================== */
 body {
-    background-color: var(--bg-color);
-    /* 點陣背景，增加漫畫感 */
-    background-image: radial-gradient(var(--border-color) 0.5px, transparent 0.5px);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, "Microsoft JhengHei";
+    background-color: #fcf8f2;
+    /* 這裡維持你最漂亮的動漫風點點背景 */
+    background-image: radial-gradient(#d3c7b5 1px, transparent 1px);
     background-size: 20px 20px;
-    font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
     margin: 0;
-    padding: 20px;
+    padding: 0;
+    color: #333;
+    display: flex;
+    justify-content: center;
 }
 
 .container {
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-header {
-    text-align: center;
-    margin-bottom: 30px;
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 h1 {
+    color: #333;
+    text-align: center;
     font-size: 2.5rem;
-    color: var(--border-color);
-    text-shadow: 3px 3px 0 var(--primary-pink);
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(0,0,0,0.1);
 }
 
-/* 日記卡片樣式 */
+/* ==========================================
+   🌸 2. 動漫風核心：日記卡片樣式 (重黑框 + 粉紅陰影)
+   ========================================== */
 .diary-card {
-    background: white;
-    border: 4px solid var(--border-color); /* 粗邊框 */
-    border-radius: 20px;
-    padding: 20px;
+    background: #fff;
+    border: 3px solid #2c2c2c;
+    border-radius: 24px;
+    padding: 25px;
     margin-bottom: 25px;
-    box-shadow: 8px 8px 0 var(--primary-pink); /* 實心投影 */
-    position: relative;
-    transition: transform 0.2s;
+    box-shadow: 8px 8px 0px #ffb7c5; /* 標誌性的粉紅立體陰影 */
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.diary-card:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 12px 12px 0 var(--primary-pink);
+.diary-card.item:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0px #ffb7c5;
 }
 
-.date-tag {
-    background: var(--sky-blue);
-    border: 2px solid var(--border-color);
-    display: inline-block;
-    padding: 5px 15px;
-    border-radius: 10px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-textarea {
+/* ==========================================
+   🌸 3. 輸入區域與按鈕
+   ========================================== */
+.input-section textarea#diary-input {
     width: 100%;
-    height: 100px;
+    height: 120px;
     border: none;
-    outline: none;
-    font-size: 1.1rem;
     resize: none;
-    background: transparent;
+    font-size: 1.1rem;
+    outline: none;
+    font-family: inherit;
+    color: #333;
 }
 
 .controls {
@@ -74,30 +66,120 @@ textarea {
     justify-content: space-between;
     align-items: center;
     margin-top: 15px;
+    padding-top: 15px;
+    border-top: 2px solid #f0f0f0;
+}
+
+/* 心情按鈕群組 */
+.mood-selector {
+    display: flex;
+    gap: 12px;
 }
 
 .mood-btn {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     cursor: pointer;
+    transition: transform 0.2s;
     padding: 5px;
+    border-radius: 50%;
     border: 2px solid transparent;
 }
 
-.mood-btn.active {
-    border-color: var(--border-color);
-    border-radius: 50%;
-    background: #fff9e6;
+.mood-btn:hover {
+    transform: scale(1.2);
 }
 
+.mood-btn.active {
+    background-color: #fff9e6;
+    border: 2px solid #2c2c2c;
+    transform: scale(1.1);
+}
+
+/* 保存紀錄按鈕 */
 .save-btn {
-    background: var(--primary-pink);
-    border: 3px solid var(--border-color);
-    padding: 10px 20px;
-    border-radius: 12px;
+    background-color: #ffb7c5;
+    color: #2c2c2c;
+    border: 2px solid #2c2c2c;
+    padding: 10px 22px;
+    font-size: 1rem;
     font-weight: bold;
+    border-radius: 16px;
     cursor: pointer;
+    box-shadow: 3px 3px 0px #2c2c2c;
+    transition: all 0.1s;
+}
+
+.save-btn:hover {
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0px #2c2c2c;
 }
 
 .save-btn:active {
-    transform: scale(0.95);
+    transform: translate(3px, 3px);
+    box-shadow: 0px 0px 0px #2c2c2c;
+}
+
+/* ==========================================
+   🌸 4. 日記列表內容顯示
+   ========================================== */
+.date-tag {
+    display: inline-block;
+    background-color: #aed8f2;
+    color: #2c2c2c;
+    border: 2px solid #2c2c2c;
+    padding: 5px 14px;
+    font-weight: bold;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    box-shadow: 2px 2px 0px #2c2c2c;
+}
+
+.content {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    word-break: break-all;
+}
+
+/* ==========================================
+   🌸 5. 心情篩選工具面板的小按鈕
+   ========================================== */
+.filter-mood-btn {
+    transition: all 0.2s ease;
+    border: 1px solid #ffe3e7;
+}
+.filter-mood-btn:hover {
+    transform: translateY(-1px);
+    background: #ffecf0 !important;
+}
+
+/* ==========================================
+   🌸 6. 新增：搜尋面板抽屜式滑動與平滑淡入動畫
+   ========================================== */
+#filter-panel {
+    max-height: 500px;
+    opacity: 1;
+    visibility: visible;
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    overflow: hidden;
+}
+
+/* 當加上這個 class 時，整個搜尋欄會優雅地縮回並隱藏 */
+#filter-panel.hide-panel {
+    max-height: 0 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* 展開/關閉按鈕的懸浮小特效 */
+#toggle-filter-btn:hover {
+    background: #FFB7C5 !important;
+    color: white !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 183, 197, 0.3);
 }

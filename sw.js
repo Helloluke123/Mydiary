@@ -1,4 +1,4 @@
-const CACHE_NAME = 'diary-app-v2.1';
+const CACHE_NAME = 'diary-app-v2.3';
 const urlsToCache = [
   './',
   './index.html',
@@ -6,6 +6,7 @@ const urlsToCache = [
   './manifest.json'
 ];
 
+// 安裝時立刻接管
 self.addEventListener('install', event => {
   self.skipWaiting(); 
   event.waitUntil(
@@ -14,6 +15,7 @@ self.addEventListener('install', event => {
   );
 });
 
+// 激活時清除所有舊快取資料夾
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
@@ -28,6 +30,7 @@ self.addEventListener('activate', event => {
   );
 });
 
+// 網路優先攔截策略
 self.addEventListener('fetch', event => {
   event.respondWith(
     fetch(event.request)

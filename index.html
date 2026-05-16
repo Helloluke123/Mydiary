@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>我的動漫風日記</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="manifest" href="manifest.json?v=2.2">
+    <link rel="stylesheet" href="css/style.css?v=2.3">
+    <link rel="manifest" href="manifest.json?v=2.3">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#FFB7C5">
 </head>
@@ -34,6 +34,7 @@
             <main>
                 <section class="input-section diary-card">
                     <textarea id="diary-input" placeholder="今天發生了什麼有趣的事呢..."></textarea>
+                    
                     <textarea id="prayer-input" placeholder="💡 寫下你今天想禱告的內容... (選填)" style="margin-top: 10px; border: 1px dashed #FFB7C5; background: #fff9fa; min-height: 80px; width: 100%; box-sizing: border-box; padding: 10px; border-radius: 10px; outline: none; font-family: inherit; resize: vertical;"></textarea>
                     
                     <div class="controls">
@@ -47,13 +48,13 @@
                     </div>
                 </section>
 
-                <div style="text-align: right; margin-bottom: 15px;">
-                    <button id="toggle-filter-btn" style="background: none; border: 1px solid #FFB7C5; color: #FFB7C5; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; transition: all 0.3s;">
-                        🔍 尋找舊回憶 / 篩選心情
+                <div style="text-align: right; margin: 0 auto 20px auto; max-width: 600px; padding: 0 10px;">
+                    <button id="toggle-filter-btn" style="background: white; border: 1px solid #FFB7C5; color: #FFB7C5; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.3s ease; outline: none;">
+                        🔍 展開歷史搜尋與心情篩選
                     </button>
                 </div>
 
-                <section id="filter-panel" class="diary-card" style="display: none; margin-bottom: 20px; padding: 15px; border: 1px solid #ffe3e7; background: #fffafb; transition: all 0.3s;">
+                <section id="filter-panel" class="diary-card hide-panel" style="padding: 15px; border: 1px solid #ffe3e7; background: #fffafb; max-width: 600px; margin: 0 auto 20px auto;">
                     <div style="display: flex; gap: 10px; margin-bottom: 10px;">
                         <input type="text" id="search-input" placeholder="🔍 輸入關鍵字搜尋日記或禱告..." style="width: 100%; box-sizing: border-box; padding: 10px; border-radius: 15px; border: 1px solid #FFB7C5; outline: none; font-size: 14px;">
                     </div>
@@ -74,30 +75,6 @@
         </div>
     </div>
 
-    <script>
-        document.getElementById('toggle-filter-btn').addEventListener('click', function() {
-            const panel = document.getElementById('filter-panel');
-            if (panel.style.display === 'none') {
-                panel.style.display = 'block';
-                this.style.background = '#FFB7C5';
-                this.style.color = 'white';
-                this.innerText = '❌ 關閉篩選工具';
-            } else {
-                panel.style.display = 'none';
-                this.style.background = 'none';
-                this.style.color = '#FFB7C5';
-                this.innerText = '🔍 尋找舊回憶 / 篩選心情';
-                
-                // 關閉時順便清空搜尋條件，還原完整列表
-                const searchInput = document.getElementById('search-input');
-                if (searchInput) {
-                    searchInput.value = '';
-                    searchInput.dispatchEvent(new Event('input')); 
-                }
-            }
-        });
-    </script>
-
-    <script type="module" src="js/main.js?v=2.2"></script>
+    <script type="module" src="js/main.js?v=2.3"></script>
 </body>
 </html>
