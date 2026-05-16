@@ -22,9 +22,6 @@ body {
 
 h1 {
     color: #333;
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 30px;
     text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(0,0,0,0.1);
 }
 
@@ -140,7 +137,6 @@ h1 {
 
 .filter-mood-btn {
     transition: all 0.2s ease;
-    border: 1px solid #ffe3e7;
 }
 .filter-mood-btn:hover {
     transform: translateY(-1px);
@@ -148,30 +144,28 @@ h1 {
 }
 
 /* ==========================================
-   🌸 5. 新增：搜尋面板右上角抽屜式滑動動畫
+   🌸 5. 右上角懸浮小抽屜淡入淡出動畫
    ========================================== */
 #filter-panel {
-    max-height: 200px;
+    max-height: 250px;
     opacity: 1;
     visibility: visible;
-    transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-    overflow: hidden;
+    transform: translateY(0);
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+/* 隱藏狀態：向上縮回、淡出並縮小 */
 #filter-panel.hide-panel {
     max-height: 0 !important;
     opacity: 0 !important;
     visibility: hidden !important;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
+    transform: translateY(-10px) scale(0.95);
+    padding: 0 !important;
     border: none !important;
     box-shadow: none !important;
 }
 
 #toggle-filter-btn:hover {
-    background: #FFB7C5 !important;
-    color: white !important;
     transform: translateY(-1px);
+    background: #ffecf0 !important;
 }
