@@ -4,7 +4,6 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, "Microsoft JhengHei";
     background-color: #fcf8f2;
-    /* 這裡維持你最漂亮的動漫風點點背景 */
     background-image: radial-gradient(#d3c7b5 1px, transparent 1px);
     background-size: 20px 20px;
     margin: 0;
@@ -38,7 +37,7 @@ h1 {
     border-radius: 24px;
     padding: 25px;
     margin-bottom: 25px;
-    box-shadow: 8px 8px 0px #ffb7c5; /* 標誌性的粉紅立體陰影 */
+    box-shadow: 8px 8px 0px #ffb7c5; 
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
@@ -70,7 +69,6 @@ h1 {
     border-top: 2px solid #f0f0f0;
 }
 
-/* 心情按鈕群組 */
 .mood-selector {
     display: flex;
     gap: 12px;
@@ -95,7 +93,6 @@ h1 {
     transform: scale(1.1);
 }
 
-/* 保存紀錄按鈕 */
 .save-btn {
     background-color: #ffb7c5;
     color: #2c2c2c;
@@ -141,9 +138,6 @@ h1 {
     word-break: break-all;
 }
 
-/* ==========================================
-   🌸 5. 心情篩選工具面板的小按鈕
-   ========================================== */
 .filter-mood-btn {
     transition: all 0.2s ease;
     border: 1px solid #ffe3e7;
@@ -154,21 +148,21 @@ h1 {
 }
 
 /* ==========================================
-   🌸 6. 新增：搜尋面板抽屜式滑動與平滑淡入動畫
+   🌸 5. 新增：搜尋面板右上角抽屜式滑動動畫
    ========================================== */
 #filter-panel {
-    max-height: 500px;
+    max-height: 200px;
     opacity: 1;
     visibility: visible;
-    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
     overflow: hidden;
 }
 
-/* 當加上這個 class 時，整個搜尋欄會優雅地縮回並隱藏 */
 #filter-panel.hide-panel {
     max-height: 0 !important;
     opacity: 0 !important;
     visibility: hidden !important;
+    margin-top: 0 !important;
     margin-bottom: 0 !important;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
@@ -176,10 +170,8 @@ h1 {
     box-shadow: none !important;
 }
 
-/* 展開/關閉按鈕的懸浮小特效 */
 #toggle-filter-btn:hover {
     background: #FFB7C5 !important;
     color: white !important;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(255, 183, 197, 0.3);
+    transform: translateY(-1px);
 }

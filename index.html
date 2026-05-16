@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>我的動漫風日記</title>
-    <link rel="stylesheet" href="css/style.css?v=2.3">
-    <link rel="manifest" href="manifest.json?v=2.3">
+    <link rel="stylesheet" href="css/style.css?v=2.4">
+    <link rel="manifest" href="manifest.json?v=2.4">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#FFB7C5">
 </head>
@@ -27,14 +27,38 @@
 
     <div id="main-content" style="display: none;">
         <div class="container">
-            <header style="display: flex; justify-content: space-between; align-items: center; padding: 20px;">
-                <h1>🌸 心情日誌 🌸</h1>
-                <button id="logout-btn" style="border: 1px solid #FFB7C5; color: #FFB7C5; background: white; padding: 5px 15px; border-radius: 15px; cursor: pointer;">登出</button>
+            <header style="display: flex; justify-content: space-between; align-items: flex-start; padding: 20px; position: relative; flex-wrap: wrap; gap: 15px;">
+                <h1 style="margin: 0; text-align: left;">🌸 心情日誌 🌸</h1>
+                
+                <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 10px;">
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <button id="toggle-filter-btn" style="background: white; border: 1px solid #FFB7C5; color: #FFB7C5; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.3s ease; outline: none;">
+                            🔍 搜尋回憶 / 篩選
+                        </button>
+                        <button id="logout-btn" style="border: 1px solid #FFB7C5; color: #FFB7C5; background: white; padding: 5px 15px; border-radius: 15px; cursor: pointer; font-size: 13px;">登出</button>
+                    </div>
+
+                    <section id="filter-panel" class="diary-card hide-panel" style="padding: 12px; border: 2px solid #2c2c2c; background: #fffafb; width: 280px; box-shadow: 4px 4px 0px #ffb7c5; margin: 0; z-index: 100;">
+                        <div style="display: flex; gap: 10px; margin-bottom: 8px;">
+                            <input type="text" id="search-input" placeholder="🔍 輸入關鍵字搜尋..." style="width: 100%; box-sizing: border-box; padding: 8px 12px; border-radius: 12px; border: 1px solid #FFB7C5; outline: none; font-size: 13px;">
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                            <span style="font-size: 12px; color: #888;">心情：</span>
+                            <div class="filter-mood-selector" style="display: flex; gap: 4px;">
+                                <span class="filter-mood-btn active" data-filter="all" style="padding: 2px 8px; background: #FFB7C5; color: white; border-radius: 10px; cursor: pointer; font-size: 12px;">全</span>
+                                <span class="filter-mood-btn" data-filter="😊" style="padding: 2px 6px; background: #fdf0f2; border-radius: 10px; cursor: pointer; font-size: 12px;">😊</span>
+                                <span class="filter-mood-btn" data-filter="🌟" style="padding: 2px 6px; background: #fdf0f2; border-radius: 10px; cursor: pointer; font-size: 12px;">🌟</span>
+                                <span class="filter-mood-btn" data-filter="☁️" style="padding: 2px 6px; background: #fdf0f2; border-radius: 10px; cursor: pointer; font-size: 12px;">☁️</span>
+                                <span class="filter-mood-btn" data-filter="🌧️" style="padding: 2px 6px; background: #fdf0f2; border-radius: 10px; cursor: pointer; font-size: 12px;">🌧️</span>
+                            </div>
+                        </div>
+                    </section>
+                </div>
             </header>
+            
             <main>
                 <section class="input-section diary-card">
                     <textarea id="diary-input" placeholder="今天發生了什麼有趣的事呢..."></textarea>
-                    
                     <textarea id="prayer-input" placeholder="💡 寫下你今天想禱告的內容... (選填)" style="margin-top: 10px; border: 1px dashed #FFB7C5; background: #fff9fa; min-height: 80px; width: 100%; box-sizing: border-box; padding: 10px; border-radius: 10px; outline: none; font-family: inherit; resize: vertical;"></textarea>
                     
                     <div class="controls">
@@ -48,33 +72,11 @@
                     </div>
                 </section>
 
-                <div style="text-align: right; margin: 0 auto 20px auto; max-width: 600px; padding: 0 10px;">
-                    <button id="toggle-filter-btn" style="background: white; border: 1px solid #FFB7C5; color: #FFB7C5; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.3s ease; outline: none;">
-                        🔍 展開歷史搜尋與心情篩選
-                    </button>
-                </div>
-
-                <section id="filter-panel" class="diary-card hide-panel" style="padding: 15px; border: 1px solid #ffe3e7; background: #fffafb; max-width: 600px; margin: 0 auto 20px auto;">
-                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                        <input type="text" id="search-input" placeholder="🔍 輸入關鍵字搜尋日記或禱告..." style="width: 100%; box-sizing: border-box; padding: 10px; border-radius: 15px; border: 1px solid #FFB7C5; outline: none; font-size: 14px;">
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                        <span style="font-size: 13px; color: #888;">心情篩選：</span>
-                        <div class="filter-mood-selector" style="display: flex; gap: 8px;">
-                            <span class="filter-mood-btn active" data-filter="all" style="padding: 4px 10px; background: #FFB7C5; color: white; border-radius: 12px; cursor: pointer; font-size: 13px;">全部</span>
-                            <span class="filter-mood-btn" data-filter="😊" style="padding: 4px 8px; background: #fdf0f2; border-radius: 12px; cursor: pointer; font-size: 13px;">😊</span>
-                            <span class="filter-mood-btn" data-filter="🌟" style="padding: 4px 8px; background: #fdf0f2; border-radius: 12px; cursor: pointer; font-size: 13px;">🌟</span>
-                            <span class="filter-mood-btn" data-filter="☁️" style="padding: 4px 8px; background: #fdf0f2; border-radius: 12px; cursor: pointer; font-size: 13px;">☁️</span>
-                            <span class="filter-mood-btn" data-filter="🌧️" style="padding: 4px 8px; background: #fdf0f2; border-radius: 12px; cursor: pointer; font-size: 13px;">🌧️</span>
-                        </div>
-                    </div>
-                </section>
-
                 <section id="diary-list"></section>
             </main>
         </div>
     </div>
 
-    <script type="module" src="js/main.js?v=2.3"></script>
+    <script type="module" src="js/main.js?v=2.4"></script>
 </body>
 </html>
