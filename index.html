@@ -5,13 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>我的動漫風日記</title>
     <link rel="stylesheet" href="css/style.css">
-    <!-- 加入版本號強迫瀏覽器重新偵測 PWA 狀態 -->
-    <link rel="manifest" href="manifest.json?v=1.5">
+    <link rel="manifest" href="manifest.json?v=1.7">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#FFB7C5">
 </head>
 <body>
-    <!-- 登入區塊 -->
     <div id="auth-container" style="padding: 50px 20px; text-align: center;">
         <div class="diary-card" style="display: inline-block; max-width: 400px; width: 100%; background: white; padding: 30px; border-radius: 20px;">
             <h2 style="color: #FFB7C5;">🌸 歡迎回來 🌸</h2>
@@ -27,7 +25,6 @@
         </div>
     </div>
 
-    <!-- 主內容區塊 -->
     <div id="main-content" style="display: none;">
         <div class="container">
             <header style="display: flex; justify-content: space-between; align-items: center; padding: 20px;">
@@ -37,6 +34,8 @@
             <main>
                 <section class="input-section diary-card">
                     <textarea id="diary-input" placeholder="今天發生了什麼有趣的事呢..."></textarea>
+                    <textarea id="prayer-input" placeholder="💡 寫下你今天想禱告的內容... (選填)" style="margin-top: 10px; border: 1px dashed #FFB7C5; background: #fff9fa; min-height: 80px;"></textarea>
+                    
                     <div class="controls">
                         <div class="mood-selector">
                             <span class="mood-btn active" data-mood="😊">😊</span>
@@ -47,12 +46,28 @@
                         <button id="save-btn" class="save-btn">保存紀錄 ✨</button>
                     </div>
                 </section>
+
+                <section class="diary-card" style="margin-bottom: 20px; padding: 15px; border: 1px solid #ffe3e7; background: #fffafb;">
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <input type="text" id="search-input" placeholder="🔍 輸入關鍵字搜尋日記或禱告..." style="flex: 1; padding: 10px; border-radius: 15px; border: 1px solid #FFB7C5; outline: none; font-size: 14px;">
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                        <span style="font-size: 13px; color: #888;">心情篩選：</span>
+                        <div class="filter-mood-selector" style="display: flex; gap: 8px;">
+                            <span class="filter-mood-btn active" data-filter="all" style="padding: 4px 10px; background: #eee; border-radius: 12px; cursor: pointer; font-size: 13px;">全部</span>
+                            <span class="filter-mood-btn" data-filter="😊" style="padding: 4px 8px; background: #fdf0f2; border-radius: 12px; cursor: pointer; font-size: 13px;">😊</span>
+                            <span class="filter-mood-btn" data-filter="🌟" style="padding: 4px 8px; background: #fdf0f2; border-radius: 12px; cursor: pointer; font-size: 13px;">🌟</span>
+                            <span class="filter-mood-btn" data-filter="☁️" style="padding: 4px 8px; background: #fdf0f2; border-radius: 12px; cursor: pointer; font-size: 13px;">☁️</span>
+                            <span class="filter-mood-btn" data-filter="🌧️" style="padding: 4px 8px; background: #fdf0f2; border-radius: 12px; cursor: pointer; font-size: 13px;">🌧️</span>
+                        </div>
+                    </div>
+                </section>
+
                 <section id="diary-list"></section>
             </main>
         </div>
     </div>
 
-    <!-- JS 加上版本號避免舊版程式碼干擾 -->
-    <script type="module" src="js/main.js?v=1.5"></script>
+    <script type="module" src="js/main.js?v=1.7"></script>
 </body>
 </html>

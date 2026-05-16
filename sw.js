@@ -1,10 +1,10 @@
-const CACHE_NAME = 'diary-app-v1.5';
+const CACHE_NAME = 'diary-app-v1.7';
 const urlsToCache = [
   './',
   './index.html',
   './css/style.css',
-  './js/main.js?v=1.5',
-  './manifest.json?v=1.5'
+  './js/main.js?v=1.7',
+  './manifest.json?v=1.7'
 ];
 
 self.addEventListener('install', event => {
